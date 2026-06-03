@@ -14,7 +14,7 @@ All visuals are CSS and `<canvas>`; there are no image assets.
 ## Deploying to GitHub Pages
 1. Push these files to a repository.
 2. In **Settings → Pages**, set the source to your default branch, root (`/`).
-3. The site is live at `https://<user>.github.io/<repo>/`.
+3. The site is live at `https://MilkmanAbi.github.io/Sage-Showcase/`.
 
 Because every path is relative, it works equally well from a project subpath
 or a custom domain.
