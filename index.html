@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sage — A friendlier language for kinder times</title>
+<meta name="description" content="Sage is a young, experimental language with one guiding idea: programming should be pleasant, and you should have real choices.">
+<meta name="theme-color" content="#0a0810">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23e7d3ef'/%3E%3Cstop%20offset='1'%20stop-color='%23f0d2e2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20x='2'%20y='4'%20width='28'%20height='24'%20rx='6'%20fill='url(%23g)'/%3E%3Ctext%20x='16'%20y='21'%20font-family='monospace'%20font-size='12'%20font-weight='700'%20text-anchor='middle'%20fill='%232a2240'%3E%26gt;_%26lt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a href="#main" class="skip-nav">Skip to content</a>
+<div id="scroll-progress"></div>
+
+<!-- Fixed atmospheric background -->
+<div class="bg-stage" aria-hidden="true">
+  <div class="bg-wallpaper"></div>
+  <div class="bg-overlay"></div>
+  <div class="bg-bloom bloom-1"></div>
+  <div class="bg-bloom bloom-2"></div>
+  <div class="bg-bloom bloom-3"></div>
+  <div class="bg-grain"></div>
+</div>
+<canvas id="firefly-canvas" aria-hidden="true"></canvas>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <nav class="nav-inner" aria-label="Primary">
+    <a href="#top" class="nav-mark"><span class="nav-glyph">&gt;_&lt;</span>sage</a>
+    <div class="nav-links">
+      <a href="#what" data-spy>what is sage</a>
+      <a href="#features" data-spy>features</a>
+      <a href="#code" data-spy>code</a>
+      <a href="#">docs</a>
+      <a href="https://github.com/MilkmanAbi/Sage" class="nav-cta" target="_blank" rel="noopener"><i data-lucide="github"></i> github</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#what">what is sage</a>
+  <a href="#features">features</a>
+  <a href="#code">code</a>
+  <a href="#">docs</a>
+  <a href="https://github.com/MilkmanAbi/Sage" target="_blank" rel="noopener"><i data-lucide="github"></i> github</a>
+</div>
+
+<main id="main">
+<span id="top"></span>
+
+<!-- ============ HERO ============ -->
+<section class="hero" aria-label="Introduction">
+  <div class="hero-content">
+    <span class="badge"><i data-lucide="sparkles"></i> alpha · experimental</span>
+    <h1>A <em>friendlier</em> language<br>for <em>kinder</em> times.</h1>
+    <p class="hero-sub">Sage is a young, experimental language with one guiding idea: programming should be pleasant, and you should have real choices.</p>
+    <div class="hero-ctas">
+      <a href="#what" class="btn btn-primary">Get started <i data-lucide="arrow-right"></i></a>
+      <a href="https://github.com/MilkmanAbi/Sage" class="btn btn-ghost" target="_blank" rel="noopener"><i data-lucide="github"></i> Read the source</a>
+    </div>
+  </div>
+  <div class="scroll-cue" id="scroll-cue" aria-hidden="true"><i data-lucide="chevron-down"></i></div>
+</section>
+
+<!-- ============ WHAT IS SAGE ============ -->
+<section class="section" id="what" role="region" aria-label="What is Sage">
+  <div class="container narrow">
+    <span class="label reveal">what is sage</span>
+    <h2 class="h-section reveal">Something <em>small</em>, made carefully.</h2>
+    <div class="body-copy" style="margin-top:26px;">
+      <p class="reveal">Sage is a new language. Not new like a startup announcement — new like something still being figured out, built carefully and without a roadmap. It runs. It is honest about what it cannot yet do.</p>
+      <p class="reveal">The idea behind Sage is simple: a language should tell you what went wrong, not just that something did. It should give you choices instead of picking for you. It should stay out of your way when you know what you're doing and catch you gently when you don't.</p>
+      <p class="reveal">Sage can be run as a script or compiled to a binary. It handles memory for you by default, but steps aside when you need to handle it yourself. It has a sandbox for running untrusted code, a friendly error system that gives real advice, and native bridges to Python and C libraries.</p>
+      <p class="reveal">It is not trying to be the fastest language or the cleverest. It is trying to be a language you enjoy spending time with. That is the whole goal.</p>
+    </div>
+    <aside class="aside reveal">Sage is alpha software. The interpreter works well. The compiler is experimental. There are bugs. That's where things stand.</aside>
+  </div>
+</section>
+
+<!-- ============ EXECUTION MODES ============ -->
+<section class="section" id="features" role="region" aria-label="Execution modes">
+  <div class="container">
+    <span class="label reveal">execution</span>
+    <h2 class="h-section reveal">Run it. Or compile it.<br>That part is <em>up to you.</em></h2>
+    <p class="subtext reveal">Both paths are native to the language. Same syntax, same standard library, same toolchain. You choose when you ship — not when you start.</p>
+
+    <div class="grid-2" data-stagger>
+      <div class="card accent-blue reveal-up">
+        <span class="card-icon"><i data-lucide="leaf"></i></span>
+        <h3 class="card-head">Interpreted</h3>
+        <p>Run your Sage file directly with the MossVM bytecode VM or the AST interpreter. This is the primary path — mature, tested, the one you will use most days. Fast startup, good for scripts and tooling.</p>
+        <div class="terminal compact" role="img" aria-label="Terminal: running a Sage file with the interpreter and REPL">
+          <div class="terminal-body stagger"><pre><code><span class="ln"><span class="prompt">$</span> sage hello.sage</span>
+<span class="ln"><span class="out">hello, world</span></span>
+<span class="ln"> </span>
+<span class="ln"><span class="prompt">$</span> sage --ast hello.sage    <span class="cmt"># force AST interpreter</span></span>
+<span class="ln"><span class="out">hello, world</span></span>
+<span class="ln"> </span>
+<span class="ln"><span class="prompt">$</span> sage repl               <span class="cmt"># interactive REPL</span></span>
+<span class="ln">sage&gt; <span class="kw">let</span> x = <span class="num">42</span></span>
+<span class="ln">sage&gt; <span class="fn">println</span>(x + <span class="num">1</span>)</span>
+<span class="ln"><span class="out">43</span></span></code></pre></div>
+        </div>
+      </div>
+
+      <div class="card accent-lilac reveal-up">
+        <span class="card-icon"><i data-lucide="zap"></i></span>
+        <h3 class="card-head">Compiled (AOT)</h3>
+        <p>Compile to a native binary with <code>--aot</code>. The compiler is experimental — it handles a meaningful subset of Sage today. When your code is ready and the compiler catches up to it, a binary is waiting.</p>
+        <div class="terminal compact" role="img" aria-label="Terminal: compiling a Sage file ahead-of-time and running the binary">
+          <div class="terminal-body stagger"><pre><code><span class="ln"><span class="prompt">$</span> sage --aot hello.sage</span>
+<span class="ln">  <span class="cmt">compiling hello.sage → hello</span></span>
+<span class="ln"> </span>
+<span class="ln"><span class="prompt">$</span> ./hello</span>
+<span class="ln"><span class="out">hello, world</span></span></code></pre></div>
+        </div>
+        <p class="note-soft reveal">The compiler is the part still growing. We'll update this page when more of the feature set is covered. For now, <code>--aot</code> works well for programs that don't use the more advanced features.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MEMORY MANAGEMENT ============ -->
+<section class="section" role="region" aria-label="Memory management">
+  <div class="container">
+    <span class="label reveal">memory</span>
+    <h2 class="h-section reveal">Three modes. <em>You pick.</em></h2>
+    <p class="intro reveal">Most languages choose one memory strategy and ask you to live with it. Sage offers three. This is not about complexity — it's about not forcing a choice that should be yours. Use the garbage collector by default. Reach for manual control when you have a reason. Mix them when it makes sense. None of these modes are second-class.</p>
+
+    <div class="flick-stage" id="memStage">
+      <!-- invisible sizer: matches the tallest card so the stack has a stable height -->
+      <div class="flick-sizer card accent-lilac" aria-hidden="true">
+        <span class="card-icon"><i data-lucide="shuffle"></i></span>
+        <h3 class="card-head">Hybrid</h3>
+        <p>Disable and re-enable the GC inline with <code>gc_disable()</code> and <code>gc_enable()</code>. Useful for hot paths where you want manual control for a tight loop, then hand allocation back when the work is done.</p>
+        <div class="terminal compact"><div class="terminal-body"><pre><code>proc process_batch(items):
+    gc_disable()
+
+    var buf = mem_alloc(len(items) * 8)
+    for i in range(0, len(items)):
+        mem_write(buf, i * 8, "float", items[i])
+
+    var result = compute(buf, len(items))
+    mem_free(buf)
+
+    gc_enable()
+    return result</code></pre></div></div>
+      </div>
+
+      <div class="card flick-card accent-blue" data-name="gc">
+        <div class="dogear" aria-hidden="true"></div>
+        <span class="card-icon"><i data-lucide="recycle"></i></span>
+        <span class="card-badge">default</span>
+        <h3 class="card-head">Garbage collected</h3>
+        <p>SageGC manages everything. Tri-color mark-sweep with concurrent marking and cycle detection. You write code. It cleans up. This is the right choice for most programs, most of the time.</p>
+        <div class="terminal compact" role="img" aria-label="Sage code using garbage collection, no annotations needed">
+          <div class="terminal-body"><pre><code><span class="cmt"># No annotations needed.</span>
+<span class="cmt"># GC handles this.</span>
+
+<span class="kw">let</span> users = []
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">0</span>, <span class="num">1000</span>):
+    users.<span class="fn">push</span>({ name: <span class="str">"user_"</span> + <span class="fn">str</span>(i) })
+
+<span class="fn">println</span>(<span class="str">"loaded: "</span> + <span class="fn">str</span>(<span class="fn">len</span>(users)))</code></pre></div>
+        </div>
+      </div>
+
+      <div class="card flick-card accent-pink" data-name="manual">
+        <div class="dogear" aria-hidden="true"></div>
+        <span class="card-icon"><i data-lucide="wrench"></i></span>
+        <h3 class="card-head">Manual</h3>
+        <p>Pause the GC entirely inside an <code>@manual:</code> block. You get full allocator access — mem_alloc, mem_free, pointer arithmetic. The block scope makes the intent explicit. Step out of the block, and the GC is back.</p>
+        <div class="terminal compact" role="img" aria-label="Sage code using a manual memory block">
+          <div class="terminal-body"><pre><code><span class="kw">@manual</span>:
+    <span class="kw">var</span> buf = <span class="fn">mem_alloc</span>(<span class="num">4096</span>)
+    <span class="fn">mem_write</span>(buf, <span class="num">0</span>, <span class="str">"int"</span>, <span class="num">42</span>)
+
+    <span class="kw">var</span> ptr = buf
+    ptr = ptr + <span class="num">4</span>          <span class="cmt"># pointer arithmetic</span>
+    <span class="fn">mem_write</span>(ptr, <span class="num">0</span>, <span class="str">"int"</span>, <span class="num">99</span>)
+
+    <span class="fn">println</span>(<span class="fn">mem_read</span>(buf, <span class="num">0</span>, <span class="str">"int"</span>))   <span class="cmt"># 42</span>
+    <span class="fn">println</span>(<span class="fn">mem_read</span>(ptr, <span class="num">0</span>, <span class="str">"int"</span>))   <span class="cmt"># 99</span>
+
+    <span class="fn">mem_free</span>(buf)</code></pre></div>
+        </div>
+      </div>
+
+      <div class="card flick-card accent-lilac" data-name="hybrid">
+        <div class="dogear" aria-hidden="true"></div>
+        <span class="card-icon"><i data-lucide="shuffle"></i></span>
+        <h3 class="card-head">Hybrid</h3>
+        <p>Disable and re-enable the GC inline with <code>gc_disable()</code> and <code>gc_enable()</code>. Useful for hot paths where you want manual control for a tight loop, then hand allocation back when the work is done.</p>
+        <div class="terminal compact" role="img" aria-label="Sage code mixing GC and manual control">
+          <div class="terminal-body"><pre><code><span class="kw">proc</span> <span class="fn">process_batch</span>(items):
+    <span class="fn">gc_disable</span>()
+
+    <span class="kw">var</span> buf = <span class="fn">mem_alloc</span>(<span class="fn">len</span>(items) * <span class="num">8</span>)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">0</span>, <span class="fn">len</span>(items)):
+        <span class="fn">mem_write</span>(buf, i * <span class="num">8</span>, <span class="str">"float"</span>, items[i])
+
+    <span class="cmt"># critical section — no GC pauses here</span>
+    <span class="kw">var</span> result = <span class="fn">compute</span>(buf, <span class="fn">len</span>(items))
+    <span class="fn">mem_free</span>(buf)
+
+    <span class="fn">gc_enable</span>()
+    <span class="kw">return</span> result    <span class="cmt"># GC resumes</span></code></pre></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flick-ui">
+      <div class="flick-dots" id="memDots" role="tablist" aria-label="Memory modes"></div>
+      <button class="flick-btn" id="memFlick" type="button">flick away <i data-lucide="send"></i></button>
+    </div>
+    <p class="flick-hint">pull the corner · click a card · or use the button</p>
+
+    <p class="center-block note-soft reveal">The optional memory safety pass (<code>sage safety your_file.sage</code>) checks for use-after-free, double-move, and aliased mutation — regardless of which mode you're using.</p>
+  </div>
+</section>
+
+<!-- ============ LILYBOX ============ -->
+<section class="section" role="region" aria-label="LilyBox sandbox">
+  <div class="container">
+    <span class="label reveal">sandbox</span>
+    <h2 class="h-section reveal">LilyBox: a container<br>when you <em>need</em> one.</h2>
+    <p class="intro reveal">LilyBox is Sage's optional sandboxed execution environment. If you're running code you didn't write — a plugin, a user script, a third-party module — LilyBox gives you a contained space with explicit permissions. Nothing sneaks through.</p>
+    <aside class="aside blue reveal">LilyBox is entirely optional. If you're writing your own programs and not running untrusted code, you can ignore it completely. It exists for the cases where it matters.</aside>
+
+    <div class="cols-2">
+      <div class="tiles">
+        <div class="tile reveal-up">
+          <div class="tile-head">
+            <span class="tile-ic blue"><i data-lucide="box"></i></span>
+            <h4>LilyBox</h4>
+          </div>
+          <p>The container itself. Wraps MossVM in an isolated execution context. Sandboxed code cannot see outside the box unless explicitly permitted.</p>
+        </div>
+        <div class="tile reveal-up">
+          <div class="tile-head">
+            <span class="tile-ic lilac"><i data-lucide="shield-check"></i></span>
+            <h4>LilyKnight</h4>
+          </div>
+          <p>The permission layer. Controls what sandboxed code can do — network calls, file access, process operations, FFI, environment variables, even clock access. Enforced at bytecode dispatch, not at the syscall level, which makes it fast and inspectable.</p>
+        </div>
+        <div class="tile reveal-up">
+          <div class="tile-head">
+            <span class="tile-ic pink"><i data-lucide="droplets"></i></span>
+            <h4>FrogPond</h4>
+          </div>
+          <p>The user-facing API for LilyBox. <code>import sandbox</code> in your Sage code to create and manage boxes. FrogPond handles the manifest format, permission negotiation, and the calling convention between the host and the guest.</p>
+        </div>
+      </div>
+
+      <div class="col-code stack-gap">
+        <div class="reveal-up">
+          <span class="code-label">the manifest</span>
+          <div class="terminal" role="img" aria-label="A LilyBox permission manifest in TOML">
+            <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">plugin.manifest</span></div>
+            <div class="terminal-body"><pre><code><span class="cmt"># plugin.manifest</span>
+[<span class="type">sandbox</span>]
+<span class="type">net</span>         = <span class="kw">true</span>
+<span class="type">net.allowed_hosts</span> = [<span class="str">"api.example.com"</span>]
+<span class="type">net.max_connections</span> = <span class="num">4</span>
+
+<span class="type">fs.read</span>     = <span class="kw">true</span>
+<span class="type">fs.paths</span>    = [<span class="str">"./data/"</span>]
+
+<span class="type">proc.exec</span>   = <span class="kw">false</span>
+<span class="type">ffi</span>         = <span class="kw">false</span></code></pre></div>
+          </div>
+        </div>
+        <div class="reveal-up">
+          <span class="code-label">the host program</span>
+          <div class="terminal" role="img" aria-label="A Sage host program that creates and runs a sandbox">
+            <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">host.sage</span></div>
+            <div class="terminal-body"><pre><code><span class="kw">import</span> sandbox
+
+<span class="cmt"># create a box from a manifest</span>
+<span class="kw">let</span> box = sandbox.<span class="fn">create</span>(<span class="str">"plugin.manifest"</span>)
+
+<span class="cmt"># run a sage file inside the box</span>
+<span class="kw">let</span> result = sandbox.<span class="fn">run</span>(box, <span class="str">"plugin.sage"</span>, [<span class="str">"--mode"</span>, <span class="str">"fast"</span>])
+
+<span class="kw">if</span> result.ok:
+    <span class="fn">println</span>(<span class="str">"plugin output: "</span> + result.stdout)
+<span class="kw">else</span>:
+    <span class="fn">println</span>(<span class="str">"plugin error: "</span> + result.error)
+
+sandbox.<span class="fn">close</span>(box)</code></pre></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="center-block note-mid reveal">Capabilities are unforgeable tokens. Sandboxed code cannot manufacture a network capability — it either received one from the manifest at startup or it didn't. This is what makes LilyBox safe to use for untrusted plugins without a syscall interception layer.</p>
+  </div>
+</section>
+
+<!-- ============ FIREFLY ERRORS ============ -->
+<section class="section" role="region" aria-label="Firefly error system">
+  <div class="container">
+    <span class="label reveal">errors</span>
+    <h2 class="h-section reveal">Firefly: errors that<br><em>actually help.</em></h2>
+    <p class="intro reveal">When something goes wrong in Sage, Firefly handles it. Firefly is not an afterthought — it's a named subsystem that runs during both interpretation and compilation. Its job is to give you a real answer: what broke, where it was, and a reasonable suggestion for what to do next.</p>
+
+    <div class="reveal-up" style="max-width:760px;margin:42px auto 0;">
+      <div class="terminal" role="img" aria-label="Firefly diagnostic output for an undefined variable error">
+        <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">firefly diagnostic</span></div>
+        <div class="terminal-body"><pre><code><span class="op">-- error[E001]:</span> undefined variable <span class="str">'nme'</span>
+   → hello.sage  line 4, col 9
+
+ 3 | <span class="kw">proc</span> <span class="fn">greet</span>(name: <span class="type">str</span>):
+ 4 |     <span class="fn">println</span>(nme)
+   |             <span class="type">^^^</span>
+ 5 |     <span class="kw">return</span> <span class="str">"hello, "</span> + name
+
+ <span class="prompt">Firefly ✦</span>  <span class="str">'nme'</span> is not defined in this scope.
+            Did you mean <span class="str">'name'</span>? (1 character off)
+
+ Call stack:
+   0. greet        hello.sage:4
+   1. main         hello.sage:12
+
+<span class="op">──────────────────────────────────────────────────────</span></code></pre></div>
+      </div>
+    </div>
+
+    <div class="chips" data-stagger>
+      <div class="chip reveal-up">
+        <span class="chip-title"><i data-lucide="map-pin"></i> Source location</span>
+        <p>Line, column, the surrounding code context. Not just a number — the actual lines so you know exactly what Firefly is pointing at.</p>
+      </div>
+      <div class="chip reveal-up">
+        <span class="chip-title"><i data-lucide="lightbulb"></i> "Did you mean?"</span>
+        <p>Firefly uses edit-distance checking on identifiers. Typos in variable names, wrong method spellings — Firefly suggests the closest match in scope.</p>
+      </div>
+      <div class="chip reveal-up">
+        <span class="chip-title"><i data-lucide="layers"></i> Call stack</span>
+        <p>The full call chain at the moment of failure. Named frames, source locations. Firefly keeps the stack during execution, not just at crash.</p>
+      </div>
+    </div>
+
+    <div class="cols-2" style="margin-top:42px;">
+      <div class="reveal">
+        <p class="note-mid">Firefly has three verbosity modes.</p>
+        <p class="note-mid" style="margin-top:14px;">Use <code>--firefly=full</code> for the complete picture (the default). Use <code>--firefly=minimal</code> when you know what you're doing and just want the location. Use <code>--firefly=off</code> for raw errors only — useful inside other tooling.</p>
+      </div>
+      <div class="col-code reveal-up">
+        <div class="terminal compact" role="img" aria-label="Firefly verbosity flags">
+          <div class="terminal-body"><pre><code><span class="prompt">$</span> sage --firefly=full   hello.sage   <span class="cmt"># default</span>
+<span class="prompt">$</span> sage --firefly=minimal hello.sage  <span class="cmt"># location only</span>
+<span class="prompt">$</span> sage --firefly=off     hello.sage  <span class="cmt"># raw only</span></code></pre></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FFI ============ -->
+<section class="section" role="region" aria-label="Python and C foreign function interface">
+  <div class="container">
+    <span class="label reveal">interop</span>
+    <h2 class="h-section reveal">Talk to the world<br>you <em>already know.</em></h2>
+    <p class="intro reveal">Sage ships with two native foreign function bridges. Python and C. Both are first-class features — they're built into the interpreter, not added as optional extensions. If Python is installed and the C headers are available, both bridges are ready.</p>
+
+    <div class="cols-2">
+      <div class="reveal-up">
+        <h3 class="col-head">Python</h3>
+        <span class="col-tag">import python</span>
+        <p class="note-mid" style="margin-bottom:18px;">Import any installed Python library and call it from Sage code directly. numpy, requests, PIL — if Python can import it, Sage can use it. The bridge handles type conversion automatically for the common cases.</p>
+        <div class="terminal" role="img" aria-label="Sage code calling numpy and requests through the Python FFI">
+          <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">python_ffi.sage</span></div>
+          <div class="terminal-body"><pre><code><span class="kw">import</span> python
+
+<span class="cmt"># use numpy from Sage</span>
+<span class="kw">let</span> np = python.<span class="fn">import</span>(<span class="str">"numpy"</span>)
+<span class="kw">let</span> data = np.<span class="fn">array</span>([<span class="num">1.0</span>, <span class="num">2.0</span>, <span class="num">3.0</span>, <span class="num">4.0</span>, <span class="num">5.0</span>])
+<span class="fn">println</span>(np.<span class="fn">mean</span>(data))      <span class="cmt"># 3.0</span>
+<span class="fn">println</span>(np.<span class="fn">std</span>(data))       <span class="cmt"># 1.4142...</span>
+
+<span class="cmt"># use requests</span>
+<span class="kw">let</span> requests = python.<span class="fn">import</span>(<span class="str">"requests"</span>)
+<span class="kw">let</span> r = requests.<span class="fn">get</span>(<span class="str">"https://api.example.com/data"</span>)
+<span class="fn">println</span>(r.status_code)      <span class="cmt"># 200</span>
+<span class="fn">println</span>(r.<span class="fn">json</span>())</code></pre></div>
+        </div>
+      </div>
+
+      <div class="reveal-up">
+        <h3 class="col-head">C</h3>
+        <span class="col-tag">import c_ffi</span>
+        <p class="note-mid" style="margin-bottom:18px;">Load a shared library and bind to its functions directly. You describe the signature, Sage handles the dispatch. Useful for system libraries, existing C code, and anything with a C ABI.</p>
+        <div class="terminal" role="img" aria-label="Sage code binding to libm through the C FFI">
+          <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">c_ffi.sage</span></div>
+          <div class="terminal-body"><pre><code><span class="kw">import</span> c_ffi
+
+<span class="cmt"># load a shared library</span>
+<span class="kw">let</span> libm = c_ffi.<span class="fn">load</span>(<span class="str">"libm.so.6"</span>)
+
+<span class="cmt"># bind to a function</span>
+<span class="kw">let</span> sqrt_fn = c_ffi.<span class="fn">bind</span>(libm, <span class="str">"sqrt"</span>,
+    args: [<span class="str">"double"</span>],
+    ret:  <span class="str">"double"</span>
+)
+
+<span class="fn">println</span>(<span class="fn">sqrt_fn</span>(<span class="num">2.0</span>))   <span class="cmt"># 1.4142...</span>
+<span class="fn">println</span>(<span class="fn">sqrt_fn</span>(<span class="num">9.0</span>))   <span class="cmt"># 3.0</span>
+
+c_ffi.<span class="fn">unload</span>(libm)</code></pre></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="center-block tight note-soft reveal">Python FFI requires Python 3 to be installed. C FFI requires libffi. Neither is required to use Sage — both are opt-in at runtime. The <code>--info</code> flag tells you which bridges are available.</p>
+  </div>
+</section>
+
+<!-- ============ OPTIONAL SAFETY ============ -->
+<section class="section" role="region" aria-label="Optional memory safety">
+  <div class="container">
+    <span class="label reveal">safety</span>
+    <h2 class="h-section reveal">A safety check,<br>when you <em>want</em> one.</h2>
+    <p class="intro reveal">Sage has an ownership and borrow analysis system. It checks for use-after-move, double-move, and aliased mutation. It is opt-in. Run it as a standalone analysis pass, or ask it to check before executing. Either way, it tells you what it found — not what you must do.</p>
+
+    <div class="cols-2">
+      <div class="reveal">
+        <ul class="firefly-list">
+          <li><i data-lucide="sparkles"></i><strong>Use-after-move</strong><span class="desc">Detects when you try to use a value after it has been moved to another binding.</span></li>
+          <li><i data-lucide="sparkles"></i><strong>Double-move</strong><span class="desc">Finds when the same value would be moved more than once, which is almost always a bug.</span></li>
+          <li><i data-lucide="sparkles"></i><strong>Aliased mutation</strong><span class="desc">Warns when two bindings could mutate the same data simultaneously without coordination.</span></li>
+          <li><i data-lucide="sparkles"></i><strong>Non-blocking</strong><span class="desc">The safety pass analyzes your code and reports findings. It does not prevent you from running. You decide what to act on.</span></li>
+        </ul>
+        <div class="terminal compact" style="margin-top:26px;" role="img" aria-label="The two CLI forms for the safety pass">
+          <div class="terminal-body"><pre><code><span class="cmt"># analyze only — prints findings, does not run</span>
+<span class="prompt">$</span> sage safety your_file.sage
+
+<span class="cmt"># analyze then execute if clean</span>
+<span class="prompt">$</span> sage --strict-safety your_file.sage</code></pre></div>
+        </div>
+      </div>
+
+      <div class="col-code stack-gap">
+        <div class="reveal-up">
+          <span class="code-label">the code</span>
+          <div class="terminal" role="img" aria-label="Sage code that uses a value after moving it">
+            <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">script.sage</span></div>
+            <div class="terminal-body"><pre><code><span class="kw">let</span> name = <span class="str">"Abi"</span>
+<span class="kw">let</span> alias = name    <span class="cmt"># move, not copy</span>
+
+<span class="cmt"># use name after moving it to alias —</span>
+<span class="cmt"># the safety pass flags this</span>
+<span class="fn">println</span>(name)</code></pre></div>
+          </div>
+        </div>
+        <div class="reveal-up">
+          <span class="code-label">what sage safety finds</span>
+          <div class="terminal" role="img" aria-label="Safety pass diagnostic for use after move">
+            <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">safety report</span></div>
+            <div class="terminal-body"><pre><code><span class="op">-- safety[S002]:</span> use after move
+   → script.sage  line 6
+
+ 2 | <span class="kw">let</span> alias = name       <span class="op">← moved here</span>
+ 5 |
+ 6 |     <span class="fn">println</span>(name)      <span class="op">← used here after move</span>
+   |             <span class="type">^^^^</span>
+
+ <span class="prompt">Safety:</span> <span class="str">'name'</span> was moved to <span class="str">'alias'</span> on line 2.
+         After a move, the original binding is invalid.
+         Use <span class="str">'alias'</span> instead, or clone before moving:
+         <span class="kw">let</span> alias = name.<span class="fn">clone</span>()</code></pre></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CODE GALLERY ============ -->
+<section class="section" id="code" role="region" aria-label="Code showcase">
+  <div class="container">
+    <span class="label reveal">code</span>
+    <h2 class="h-section reveal">What Sage <em>looks like.</em></h2>
+    <p class="subtext reveal">A handful of examples — from the simple to the expressive. Nothing is contrived. These are patterns you'd actually write.</p>
+
+    <div class="gallery">
+      <div class="g-card reveal-up">
+        <span class="code-label"><i data-lucide="sparkle"></i> the classic</span>
+        <div class="terminal" role="img" aria-label="Hello world in Sage">
+          <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">hello.sage</span></div>
+          <div class="terminal-body"><pre><code><span class="kw">let</span> greeting = <span class="str">"hello, world"</span>
+<span class="fn">println</span>(greeting)</code></pre></div>
+        </div>
+      </div>
+
+      <div class="g-card reveal-up">
+        <span class="code-label"><i data-lucide="sparkle"></i> gradual typing</span>
+        <div class="terminal" role="img" aria-label="Gradual typing in Sage">
+          <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">typing.sage</span></div>
+          <div class="terminal-body"><pre><code><span class="cmt"># no annotation — inferred</span>
+<span class="kw">var</span> count = <span class="num">0</span>
+
+<span class="cmt"># type annotation — enforced</span>
+<span class="type">int</span> limit = <span class="num">100</span>
+<span class="type">str</span> label = <span class="str">"progress"</span>
+
+<span class="cmt"># this would error at runtime:</span>
+<span class="cmt"># int bad = "not a number"</span>
+
+count = count + <span class="num">1</span>
+<span class="fn">println</span>(label + <span class="str">": "</span> + <span class="fn">str</span>(count) + <span class="str">"/"</span> + <span class="fn">str</span>(limit))</code></pre></div>
+        </div>
+      </div>
+
+      <div class="g-card reveal-up">
+        <span class="code-label"><i data-lucide="sparkle"></i> structs + impl</span>
+        <div class="terminal" role="img" aria-label="Structs with impl blocks in Sage">
+          <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">point.sage</span></div>
+          <div class="terminal-body"><pre><code><span class="kw">struct</span> <span class="type">Point</span>:
+    x: <span class="type">float</span>
+    y: <span class="type">float</span>
+
+<span class="kw">impl</span> <span class="type">Point</span>:
+    <span class="kw">proc</span> <span class="fn">distance</span>(self, other: <span class="type">Point</span>) <span class="op">-&gt;</span> <span class="type">float</span>:
+        <span class="kw">let</span> dx = self.x - other.x
+        <span class="kw">let</span> dy = self.y - other.y
+        <span class="kw">return</span> math.<span class="fn">sqrt</span>(dx * dx + dy * dy)
+
+    <span class="kw">proc</span> <span class="fn">to_str</span>(self) <span class="op">-&gt;</span> <span class="type">str</span>:
+        <span class="kw">return</span> <span class="str">"("</span> + <span class="fn">str</span>(self.x) + <span class="str">", "</span> + <span class="fn">str</span>(self.y) + <span class="str">")"</span>
+
+<span class="kw">let</span> a = <span class="fn">Point</span>(<span class="num">0.0</span>, <span class="num">0.0</span>)
+<span class="kw">let</span> b = <span class="fn">Point</span>(<span class="num">3.0</span>, <span class="num">4.0</span>)
+<span class="fn">println</span>(a.<span class="fn">distance</span>(b))    <span class="cmt"># 5.0</span>
+<span class="fn">println</span>(b.<span class="fn">to_str</span>())       <span class="cmt"># (3.0, 4.0)</span></code></pre></div>
+        </div>
+      </div>
+
+      <div class="g-card reveal-up">
+        <span class="code-label"><i data-lucide="sparkle"></i> enums + match</span>
+        <div class="terminal" role="img" aria-label="ADT enums and pattern matching in Sage">
+          <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">result.sage</span></div>
+          <div class="terminal-body"><pre><code><span class="kw">enum</span> <span class="type">Result</span>:
+    <span class="fn">Ok</span>(value)
+    <span class="fn">Err</span>(message: <span class="type">str</span>)
+
+<span class="kw">proc</span> <span class="fn">divide</span>(a: <span class="type">float</span>, b: <span class="type">float</span>) <span class="op">-&gt;</span> <span class="type">Result</span>:
+    <span class="kw">if</span> b == <span class="num">0.0</span>:
+        <span class="kw">return</span> Result.<span class="fn">Err</span>(<span class="str">"cannot divide by zero"</span>)
+    <span class="kw">return</span> Result.<span class="fn">Ok</span>(a / b)
+
+<span class="kw">let</span> r = <span class="fn">divide</span>(<span class="num">10.0</span>, <span class="num">3.0</span>)
+
+<span class="kw">match</span> r:
+    <span class="kw">case</span> Result.<span class="fn">Ok</span>(v):
+        <span class="fn">println</span>(<span class="str">"got: "</span> + <span class="fn">str</span>(v))
+    <span class="kw">case</span> Result.<span class="fn">Err</span>(msg):
+        <span class="fn">println</span>(<span class="str">"error: "</span> + msg)</code></pre></div>
+        </div>
+      </div>
+
+      <div class="g-card reveal-up">
+        <span class="code-label"><i data-lucide="sparkle"></i> closures</span>
+        <div class="terminal" role="img" aria-label="Closures in Sage">
+          <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">counter.sage</span></div>
+          <div class="terminal-body"><pre><code><span class="kw">proc</span> <span class="fn">make_counter</span>(start: <span class="type">int</span>):
+    <span class="kw">var</span> n = start
+    <span class="kw">proc</span> <span class="fn">tick</span>():
+        n = n + <span class="num">1</span>
+        <span class="kw">return</span> n
+    <span class="kw">return</span> tick
+
+<span class="kw">let</span> counter = <span class="fn">make_counter</span>(<span class="num">0</span>)
+<span class="fn">println</span>(<span class="fn">counter</span>())   <span class="cmt"># 1</span>
+<span class="fn">println</span>(<span class="fn">counter</span>())   <span class="cmt"># 2</span>
+<span class="fn">println</span>(<span class="fn">counter</span>())   <span class="cmt"># 3</span></code></pre></div>
+        </div>
+      </div>
+
+      <div class="g-card reveal-up">
+        <span class="code-label"><i data-lucide="sparkle"></i> generators</span>
+        <div class="terminal" role="img" aria-label="Generators in Sage">
+          <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">fib.sage</span></div>
+          <div class="terminal-body"><pre><code><span class="kw">proc</span> <span class="fn">fibonacci</span>():
+    <span class="kw">var</span> a = <span class="num">0</span>
+    <span class="kw">var</span> b = <span class="num">1</span>
+    <span class="kw">while</span> <span class="kw">true</span>:
+        <span class="kw">yield</span> a
+        <span class="kw">let</span> next = a + b
+        a = b
+        b = next
+
+<span class="kw">let</span> fib = <span class="fn">fibonacci</span>()
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">0</span>, <span class="num">8</span>):
+    <span class="fn">print</span>(<span class="fn">str</span>(<span class="fn">next</span>(fib)) + <span class="str">" "</span>)
+<span class="cmt"># 0 1 1 2 3 5 8 13</span></code></pre></div>
+        </div>
+      </div>
+
+      <div class="g-card reveal-up">
+        <span class="code-label"><i data-lucide="sparkle"></i> defer</span>
+        <div class="terminal" role="img" aria-label="Defer in Sage">
+          <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">read.sage</span></div>
+          <div class="terminal-body"><pre><code><span class="kw">proc</span> <span class="fn">read_file</span>(path: <span class="type">str</span>):
+    <span class="kw">let</span> f = file.<span class="fn">open</span>(path, <span class="str">"r"</span>)
+    <span class="kw">defer</span>:
+        file.<span class="fn">close</span>(f)        <span class="cmt"># always runs, even on early return</span>
+
+    <span class="kw">let</span> content = file.<span class="fn">read</span>(f)
+    <span class="kw">if</span> <span class="fn">len</span>(content) == <span class="num">0</span>:
+        <span class="kw">return</span> <span class="kw">None</span>          <span class="cmt"># defer fires here too</span>
+
+    <span class="kw">return</span> content.<span class="fn">trim</span>()</code></pre></div>
+        </div>
+      </div>
+
+      <div class="g-card reveal-up">
+        <span class="code-label"><i data-lucide="sparkle"></i> null coalescing</span>
+        <div class="terminal" role="img" aria-label="Null coalescing in Sage">
+          <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">user.sage</span></div>
+          <div class="terminal-body"><pre><code><span class="kw">proc</span> <span class="fn">find_user</span>(id: <span class="type">int</span>):
+    <span class="cmt"># returns None if not found</span>
+    <span class="kw">return</span> users.<span class="fn">get</span>(id)
+
+<span class="kw">let</span> user = <span class="fn">find_user</span>(<span class="num">42</span>)
+<span class="kw">let</span> name = user.name <span class="op">??</span> <span class="str">"anonymous"</span>
+<span class="kw">let</span> role = user.role <span class="op">??</span> <span class="str">"guest"</span>
+
+<span class="fn">println</span>(<span class="str">"welcome, "</span> + name + <span class="str">" ("</span> + role + <span class="str">")"</span>)</code></pre></div>
+        </div>
+      </div>
+
+      <div class="g-card reveal-up">
+        <span class="code-label"><i data-lucide="sparkle"></i> inheritance</span>
+        <div class="terminal" role="img" aria-label="Class inheritance in Sage">
+          <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">animals.sage</span></div>
+          <div class="terminal-body"><pre><code><span class="kw">class</span> <span class="type">Animal</span>:
+    <span class="kw">proc</span> <span class="fn">init</span>(self, name: <span class="type">str</span>):
+        self.name = name
+
+    <span class="kw">proc</span> <span class="fn">speak</span>(self) <span class="op">-&gt;</span> <span class="type">str</span>:
+        <span class="kw">return</span> <span class="str">"..."</span>
+
+<span class="kw">class</span> <span class="type">Dog</span>(<span class="type">Animal</span>):
+    <span class="kw">proc</span> <span class="fn">speak</span>(self) <span class="op">-&gt;</span> <span class="type">str</span>:
+        <span class="kw">return</span> <span class="str">"woof"</span>
+
+<span class="kw">class</span> <span class="type">Cat</span>(<span class="type">Animal</span>):
+    <span class="kw">proc</span> <span class="fn">speak</span>(self) <span class="op">-&gt;</span> <span class="type">str</span>:
+        <span class="kw">return</span> <span class="str">"mrrp"</span>
+
+<span class="kw">let</span> animals = [<span class="fn">Dog</span>(<span class="str">"Rex"</span>), <span class="fn">Cat</span>(<span class="str">"Miso"</span>), <span class="fn">Dog</span>(<span class="str">"Biscuit"</span>)]
+<span class="kw">for</span> a <span class="kw">in</span> animals:
+    <span class="fn">println</span>(a.name + <span class="str">" says: "</span> + a.<span class="fn">speak</span>())</code></pre></div>
+        </div>
+      </div>
+
+      <div class="g-card reveal-up">
+        <span class="code-label"><i data-lucide="sparkle"></i> try · catch · defer</span>
+        <div class="terminal" role="img" aria-label="Try, catch and defer together in Sage">
+          <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">config.sage</span></div>
+          <div class="terminal-body"><pre><code><span class="kw">proc</span> <span class="fn">load_config</span>(path: <span class="type">str</span>):
+    <span class="kw">let</span> f = file.<span class="fn">open</span>(path, <span class="str">"r"</span>)
+    <span class="kw">defer</span>:
+        file.<span class="fn">close</span>(f)
+
+    <span class="kw">try</span>:
+        <span class="kw">let</span> raw = file.<span class="fn">read</span>(f)
+        <span class="kw">return</span> <span class="fn">parse_toml</span>(raw)
+    <span class="kw">catch</span> e:
+        <span class="fn">println</span>(<span class="str">"config parse error: "</span> + e)
+        <span class="kw">return</span> <span class="fn">default_config</span>()</code></pre></div>
+        </div>
+      </div>
+
+      <div class="g-card reveal-up">
+        <span class="code-label"><i data-lucide="sparkle"></i> manual memory</span>
+        <div class="terminal" role="img" aria-label="A brief manual memory example in Sage">
+          <div class="terminal-chrome"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span class="terminal-title">header.sage</span></div>
+          <div class="terminal-body"><pre><code><span class="kw">@manual</span>:
+    <span class="cmt"># allocate a small fixed-size buffer</span>
+    <span class="kw">var</span> header = <span class="fn">mem_alloc</span>(<span class="num">16</span>)
+
+    <span class="fn">mem_write</span>(header, <span class="num">0</span>,  <span class="str">"int"</span>, <span class="num">0xCAFEBABE</span>)   <span class="cmt"># magic</span>
+    <span class="fn">mem_write</span>(header, <span class="num">4</span>,  <span class="str">"int"</span>, <span class="num">1</span>)             <span class="cmt"># version</span>
+    <span class="fn">mem_write</span>(header, <span class="num">8</span>,  <span class="str">"int"</span>, <span class="num">1024</span>)          <span class="cmt"># size</span>
+
+    <span class="kw">let</span> magic = <span class="fn">mem_read</span>(header, <span class="num">0</span>, <span class="str">"int"</span>)
+    <span class="fn">println</span>(magic)    <span class="cmt"># -889275714 (0xCAFEBABE signed)</span>
+
+    <span class="fn">mem_free</span>(header)</code></pre></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CURRENT STATE ============ -->
+<section class="section" role="region" aria-label="Current state of the project">
+  <div class="container">
+    <span class="label reveal">where we are</span>
+    <h2 class="h-section reveal">Honest about where<br>things <em>stand.</em></h2>
+
+    <div class="cols-2" style="margin-top:42px;">
+      <div class="reveal">
+        <h3 class="col-head blue"><i data-lucide="circle-check"></i> Working today</h3>
+        <ul class="firefly-list">
+          <li><i data-lucide="sparkles"></i>The interpreter — gradual typing, structs, ADT enums, closures, generators, async/await</li>
+          <li><i data-lucide="sparkles"></i>Firefly error diagnosis — locations, suggestions, call stacks</li>
+          <li><i data-lucide="sparkles"></i>Pattern matching and match expressions</li>
+          <li><i data-lucide="sparkles"></i>GC, manual, and hybrid memory modes</li>
+          <li><i data-lucide="sparkles"></i>Python and C FFI</li>
+          <li><i data-lucide="sparkles"></i>LilyBox sandboxing</li>
+          <li><i data-lucide="sparkles"></i>The REPL</li>
+          <li><i data-lucide="sparkles"></i>defer, try/catch, null coalescing, operator overloading, the arrow operator</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <h3 class="col-head lilac"><i data-lucide="sprout"></i> Still growing</h3>
+        <ul class="firefly-list">
+          <li><i data-lucide="sparkles"></i>The AOT compiler — covers a meaningful subset, not yet complete</li>
+          <li><i data-lucide="sparkles"></i>Performance on deep recursion (we're slower than Python here currently)</li>
+          <li><i data-lucide="sparkles"></i>Generics and traits (designed, not yet implemented)</li>
+          <li><i data-lucide="sparkles"></i>Package manager (Myst — separate project, in progress)</li>
+          <li><i data-lucide="sparkles"></i>IDE integration and language server</li>
+          <li><i data-lucide="sparkles"></i>Comprehensive documentation</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="center-block note-mid reveal" style="font-size:var(--text-md);">Sage is alpha software. The language works, the codebase is clean, and development is ongoing. If something breaks or you have a question, the GitHub issues are open.</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-mark">sage <i data-lucide="sparkles"></i></div>
+        <p class="footer-tagline">A friendlier language<br>for kinder times.</p>
+        <p class="footer-meta">alpha software · MIT license</p>
+      </div>
+      <div class="footer-col">
+        <h5>project</h5>
+        <a href="https://github.com/MilkmanAbi/Sage" target="_blank" rel="noopener">GitHub <i data-lucide="arrow-up-right"></i></a>
+        <a href="https://milkmanabi.github.io/Sage-Playground/" target="_blank" rel="noopener">Sage Playground <i data-lucide="arrow-up-right"></i></a>
+        <a href="#">README</a>
+        <a href="#">Changelog</a>
+        <a href="#">Issues <i data-lucide="arrow-up-right"></i></a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-note"><strong>Built honestly.</strong>Sage is shared in the hope that it's useful or interesting to someone. It is still growing.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">© <span id="year">2026</span> SageTree · MIT license</div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script src="app.js"></script>
+<script src="sage-repl.js"></script>
+<script src="delight.js"></script>
+</body>
+</html>
